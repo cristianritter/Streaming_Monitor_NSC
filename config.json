@@ -1,0 +1,30 @@
+{   
+    "recording_size" : 10,
+    "instancias" : {
+        "CBN_STREAMING": {
+            "files_folder": "C:\\Audiologger\\CBN_STREAMING",
+            "link" : "https://27809y.ha.azioncdn.net/primary/cbn_fln.sdp/playlist.m3u8",
+            "zabbix_key": "status_cbn_streaming",  
+            "silence_offset": 0.003
+        },
+        "ATL_STREAMING": {
+            "files_folder": "C:\\Audiologger\\ATL_STREAMING",
+            "link" : "http://167809y.ha.azioncdn.net/primary/atl_fln.sdp/playlist.m3u8",
+            "zabbix_key": "status_atl_streaming",
+            "silence_offset": 0.003   
+        },
+        "ITA_STREAMING": {
+            "files_folder": "C:\\Audiologger\\ITA_STREAMING",
+            "link" : "https://47809y.ha.azioncdn.net/primary/ita_fln.sdp/playlist.m3u8",
+            "zabbix_key": "status_ita_streaming",
+            "silence_offset": 0.003   
+        }
+    },
+    "zabbix": {
+        "connection_errors_in_log": true,
+        "hostname": "WINDOWS_PC",
+        "server_ip": "10.40.38.111",
+        "port": 10051,
+        "send_metrics_interval": 30
+    }
+}
