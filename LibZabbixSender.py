@@ -16,14 +16,14 @@ class ZabbixSender:
     status - lista que traz os dados de metrica
 
     """
-    def __init__(self, metric_interval, hostname, key, server, port, idx, status):
+    def __init__(self, metric_interval, hostname, key, server, port, nome, status):
         self.metric_interval = int(metric_interval)
         self.hostname = hostname
         self.key = key
         self.server = server
         self.port = int(port)
+        self.nome = nome
         self.status = status
-        self.idx = idx
         
     def send_metric(self, status):
         '''Rotina que continuamente envia as metricas               
@@ -34,15 +34,15 @@ class ZabbixSender:
             while True:
                 time.sleep(self.metric_interval)       
                 texto_metrica = ""
-                produto=1
-                for mtrc in status:
-                    produto *= mtrc
-                metrica = status[self.idx]
+                #produto=1
+                #for mtrc in status:
+                #    produto *= mtrc
+                metrica = status[self.nome]
             
-                if (metrica & (1<<1) or produto):
-                    texto_metrica = ' modogeracao'
                 if (metrica & (1<<0)):
-                    texto_metrica = texto_metrica + ' anomaliadisparo'
+                    texto_metrica += ' Silêncio Canal Direito'
+                if (metrica & (1<<1)): #or produto):
+                    texto_metrica += ' Silêncio Canal Esquerdo'
                 if (not metrica):
                     texto_metrica = "operacaonormal"
 
