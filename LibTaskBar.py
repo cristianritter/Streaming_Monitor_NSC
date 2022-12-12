@@ -30,7 +30,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         
         self.TRAY_TOOLTIP = prog_name
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # This is your Project Root
-        task_icon = os.path.join(ROOT_DIR, 'zabbix-icon.png')          
+        task_icon = os.path.join(ROOT_DIR, 'radio-icon.png')          
         self.SetIcon(wx.Icon(task_icon), self.TRAY_TOOLTIP)
 
         self.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.on_left_down) #funcao que define o metodo de clique esquerdo no trayicon

@@ -15,12 +15,12 @@ VSVersionInfo(
       StringTable(
         u'040904B0',
         [StringStruct(u'CompanyName', u'Cristian Ritter SW'),
-        StringStruct(u'FileDescription', u'WRLogWatcher'),
+        StringStruct(u'FileDescription', u'StreamingMonitor'),
         StringStruct(u'FileVersion', u'1.0 (win7sp1_rtm.101119-1850)'),
-        StringStruct(u'InternalName', u'WRLogWatcher'),
+        StringStruct(u'InternalName', u'StreamingMonitor'),
         StringStruct(u'LegalCopyright', u'\xa9 CR Softwares. All rights reserved.'),
-        StringStruct(u'OriginalFilename', u'WRLogWatcher.exe'),
-        StringStruct(u'ProductName', u'WRLogWatcher'),
+        StringStruct(u'OriginalFilename', u'StreamingMonitor.exe'),
+        StringStruct(u'ProductName', u'StreamingMonitor'),
         StringStruct(u'ProductVersion', u'1.0')])
       ]), 
     VarFileInfo([VarStruct(u'Translation', [1033, 1200])])

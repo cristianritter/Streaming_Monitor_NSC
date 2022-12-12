@@ -23,6 +23,7 @@ from LibSaveLogFile import SaveLogFile
 from time import sleep
 from LibZabbixSender import ZabbixSender
 from LibTaskBar import TaskBarIcon
+from LibWXInitLlocaleFix import InitLocale
 
 FileOperations_ = FileOperations()
 config = FileOperations_.read_json_from_file('config.json')
@@ -61,6 +62,7 @@ def Main():
     for idx, nome in enumerate(config['instancias'].keys()):
         t.append(Thread(target=realtime_monitor, args=(nome, status), daemon=True))
         t[idx].start()
+    wx.App.InitLocale = InitLocale
     app = wx.App()   #criação da interface gráfica
     TaskBarIcon(f"Radio Streaming Monitor") 
     app.MainLoop()
