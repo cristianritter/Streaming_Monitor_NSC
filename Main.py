@@ -21,47 +21,57 @@ from LibGravacao import Gravacao
 from LibAnalyzer import Analyzer
 from LibSaveLogFile import SaveLogFile
 from time import sleep
-from LibZabbixSender import ZabbixSender
+from LibZabbixSender import MyZabbixSender
 from LibTaskBar import TaskBarIcon
 from LibWXInitLlocaleFix import InitLocale
 
 FileOperations_ = FileOperations()
 config = FileOperations_.read_json_from_file('config.json')
 
-status = {}
-for key in config['instancias'].keys():
-    status[key] = 0
-
-def realtime_monitor(nome, status):
+def realtime_monitor(metrica, nome):
     Analyzer_ = Analyzer()
     Gravacao_ = Gravacao()
-    ZabbixSender(metric_interval=config['zabbix']['send_metrics_interval'],
+    MyZabbixSender(metric_interval=config['zabbix']['send_metrics_interval'],
     hostname=config['zabbix']['hostname'],
     server=config['zabbix']['server_ip'],
     port=config['zabbix']['port'],
     key=config['instancias'][nome]['zabbix_key'],
-    nome=nome,
-    status=status
+    metrica=metrica
     )
-
     while True:
         filename = f'R:\\{nome}.wav'
-        Gravacao_.gravar_trecho_de_streaming(config['instancias'][nome]['link'], filename)
+        record_result = Gravacao_.gravar_trecho_de_streaming(config['instancias'][nome]['link'], filename)
+        if (record_result != 0):
+            print(f"Erro na gravação de {nome}")
+            metrica[0] |= (1<<2)
+        else:
+            pass
+            metrica[0] &= ~(1<<2)
+        
+        if not FileOperations_.verificar_file_exists(filename):
+            continue
+        
         audio_data = FileOperations_.read_wav_file(filename)
-        clipped_ch_status = Analyzer_.verificar_clipped(audio_data)
-        if clipped_ch_status:
-            print('Cliped')
         silence_ch_status = Analyzer_.verifica_silencio(audio_data, config['instancias'][nome]['silence_offset'])
+        
         for idx, channel in enumerate(silence_ch_status):
             if channel:
-                print(f'Silence in CH{idx}')          
+                print(f'Silence in CH{idx}')
+                metrica[0] |= (1<<idx)
+            else:
+                metrica[0] &= ~(1<<idx)
+
         sleep(10)
 
 def Main():
     t = []
+    metrica = []
     for idx, nome in enumerate(config['instancias'].keys()):
-        t.append(Thread(target=realtime_monitor, args=(nome, status), daemon=True))
+        metrica.append([0,])
+        #print(type(metrica[idx]))
+        t.append(Thread(target=realtime_monitor, args=(metrica[idx], nome), daemon=True))
         t[idx].start()
+
     wx.App.InitLocale = InitLocale
     app = wx.App()   #criação da interface gráfica
     TaskBarIcon(f"Radio Streaming Monitor") 

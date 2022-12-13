@@ -57,7 +57,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         """
         Metodo executado ao clicar com o botao esquerdo
         """
-        wx.MessageBox("Zabbix Agent para monitoração do espaço utilizado no storage Nexios. Configurações podem ser feitas no arquivo config.ini. Feito por Cristian Ritter", 'Sobre o aplicativo')
+        wx.MessageBox("Zabbix Agent para monitoração dos Streamings das Radios do grupo NSC. Configurações podem ser feitas no arquivo config.json. Feito por Cristian Ritter", 'Sobre o aplicativo')
       
     def on_right_down(self, event, tab):
         """

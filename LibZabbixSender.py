@@ -3,7 +3,7 @@ import time
 from threading import Thread
 
 
-class ZabbixSender:
+class MyZabbixSender:
     """
     Classe que implementa o sistema de envio de metricas para o Zabbix \n
     Recebe os seguintes parametros: \n
@@ -16,34 +16,34 @@ class ZabbixSender:
     status - lista que traz os dados de metrica
 
     """
-    def __init__(self, metric_interval, hostname, key, server, port, nome, status):
+    def __init__(self, metric_interval, hostname, key, server, port, metrica):
         self.metric_interval = int(metric_interval)
         self.hostname = hostname
         self.key = key
         self.server = server
         self.port = int(port)
-        self.nome = nome
-        self.status = status
+        self.metrica = metrica
+        u = Thread(target=self.send_metric, daemon=True)
+        u.start()
         
-    def send_metric(self, status):
+    def send_metric(self):
         '''Rotina que continuamente envia as metricas               
         Recebe um array do tipo lista e utiliza os dados de indice da classe criada. Funcionam como ponteiro, \n
         portanto ao alterar os valores na lista se altera também o valor da metrica enviada.
         '''
         try:
             while True:
+                print(self.metrica)
                 time.sleep(self.metric_interval)       
                 texto_metrica = ""
-                #produto=1
-                #for mtrc in status:
-                #    produto *= mtrc
-                metrica = status[self.nome]
-            
-                if (metrica & (1<<0)):
-                    texto_metrica += ' Silêncio Canal Direito'
-                if (metrica & (1<<1)): #or produto):
-                    texto_metrica += ' Silêncio Canal Esquerdo'
-                if (not metrica):
+                #print(type(self.metrica))
+                if (self.metrica[0] & (1<<0)):
+                    texto_metrica += ' rightsilence'
+                if (self.metrica[0] & (1<<1)): #or produto):
+                    texto_metrica += ' leftsilence'
+                if (self.metrica[0] & (1<<2)): #or produto):
+                    texto_metrica += ' linkdown'    
+                if (not self.metrica[0]):
                     texto_metrica = "operacaonormal"
 
                 try:
@@ -51,22 +51,11 @@ class ZabbixSender:
                         ZabbixMetric(self.hostname, self.key, texto_metrica)
                     ]
                     ZabbixSender(zabbix_server=self.server, zabbix_port=self.port).send(packet)
-                    print(texto_metrica)
                 except Exception as Err:
                     print(f"Falha de conexão com o Zabbix - {Err}")
         except Exception as Err:
             print(f"Erro: {Err}")
             time.sleep(30)
-
-    def start_zabbix_thread(self):
-        """
-        Método que inicia um thread de envio de metricas para o zabbix
-        """
-        try:
-            u = Thread(target=self.send_metric, args=[self.status], daemon=True)
-            u.start()
-        except Exception as Err:
-            print(f'Erro: {Err}')
 
 if __name__ == '__main__':
     """
@@ -77,7 +66,7 @@ if __name__ == '__main__':
     PORT = 10051
     SEND_METRICS_INTERVAL = 5
     data = [1]
-    zsender = WRZabbixSender(SEND_METRICS_INTERVAL, HOSTNAME, 'key', ZABBIX_SERVER, PORT, 0, data )
+    zsender = ZabbixSender(SEND_METRICS_INTERVAL, HOSTNAME, 'key', ZABBIX_SERVER, PORT, 0, data )
     zsender.start_zabbix_thread()
     while(True):
         time.sleep(1)

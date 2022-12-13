@@ -8,14 +8,17 @@ class FileOperations:
     def __init__(self) -> None:
         pass
     
-    def verificar_diretorios(self, inst_configs, *args):
+    def verificar_diretorios(self, *args):
         """Verifica a existência dos diretórios informados como uma tupla nos argumentos. Caso os dirtórios não existam eles serão criados."""
         print(f"Verificando a existência de diretórios necessários: \n {args}")
         for dir in args:
             if not os.path.exists(dir):
                 os.makedirs(dir)
-                self.adiciona_linha_log(f'Criando o diretório: {dir}', inst_configs['files_folder'])
-
+        
+    def verificar_file_exists(self, dir, *args):
+        """Verifica a existência do arquivo informado no argumento. Retorna true or false."""
+        return os.path.isfile(dir)
+        
     def adiciona_linha_log(self, texto, dir, time_offset=0):
         ("""Adiciona as informações do texto ao arquivo incluindo informações de data e hora, também imprime a informação no terminal"""
         """Recebe como argumentos o texto a er adicionado e o diretorio onde os arquivos da instancia sao salvos""")

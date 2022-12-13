@@ -22,9 +22,9 @@
     },
     "zabbix": {
         "connection_errors_in_log": true,
-        "hostname": "WINDOWS_PC",
-        "server_ip": "10.40.38.111",
+        "hostname": "SERVER-STREAMING",
+        "server_ip": "10.51.23.101",
         "port": 10051,
-        "send_metrics_interval": 30
+        "send_metrics_interval": 5
     }
 }

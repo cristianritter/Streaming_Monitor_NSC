@@ -25,7 +25,7 @@ class Analyzer():
             print (err)
 
     def verifica_silencio(self, data, silence_offset):
-        audio_results = [False, False, False]
+        audio_results = [False, False]
         for idx, value in enumerate(self.get_data_RMS(data)):
             if value <= silence_offset:
                 audio_results[idx] = True
