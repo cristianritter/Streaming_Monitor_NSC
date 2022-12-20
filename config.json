@@ -2,29 +2,60 @@
     "recording_size" : 10,
     "instancias" : {
         "CBN_FLO_STREAMING": {
-            "files_folder": "C:\\Audiologger\\CBN_STREAMING",
             "link" : "https://27809y.ha.azioncdn.net/primary/cbn_fln.sdp/playlist.m3u8",
             "zabbix_key": "status_cbn_flo_streaming",  
-            "silence_offset": 0.003
+            "silence_offset": 0.02
+        },
+	"CBN_JOI_STREAMING": {
+            "link" : "https://207809y.ha.azioncdn.net/primary/cbn_joi.sdp/playlist.m3u8",
+            "zabbix_key": "status_cbn_joi_streaming",  
+            "silence_offset": 0.02
         },
         "ATL_FLO_STREAMING": {
-            "files_folder": "C:\\Audiologger\\ATL_STREAMING",
             "link" : "http://167809y.ha.azioncdn.net/primary/atl_fln.sdp/playlist.m3u8",
             "zabbix_key": "status_atl_flo_streaming",
-            "silence_offset": 0.003   
+            "silence_offset": 0.02   
+        },
+	"ATL_BLU_STREAMING": {
+            "link" : "http://147809y.ha.azioncdn.net/primary/atl_blu.sdp/playlist.m3u8",
+            "zabbix_key": "status_atl_blu_streaming",
+            "silence_offset": 0.02   
+        },
+	"ATL_JOI_STREAMING": {
+            "link" : "http://187809y.ha.azioncdn.net/primary/atl_joi.sdp/playlist.m3u8",
+            "zabbix_key": "status_atl_joi_streaming",
+            "silence_offset": 0.02   
+        },
+	"ATL_CRI_STREAMING": {
+            "link" : "http://177809y.ha.azioncdn.net/primary/atl_cri.sdp/playlist.m3u8",
+            "zabbix_key": "status_atl_cri_streaming",
+            "silence_offset": 0.02   
+        },
+	"ATL_CHA_STREAMING": {
+            "link" : "http://157809y.ha.azioncdn.net/primary/atl_cha.sdp/playlist.m3u8",
+            "zabbix_key": "status_atl_cha_streaming",
+            "silence_offset": 0.02   
         },
         "ITA_FLO_STREAMING": {
-            "files_folder": "C:\\Audiologger\\ITA_STREAMING",
             "link" : "https://47809y.ha.azioncdn.net/primary/ita_fln.sdp/playlist.m3u8",
             "zabbix_key": "status_ita_flo_streaming",
-            "silence_offset": 0.003   
+            "silence_offset": 0.02   
         }
     },
-    "zabbix": {
-        "connection_errors_in_log": true,
-        "hostname": "SERVER-STREAMING",
-        "server_ip": "10.51.23.101",
-        "port": 10051,
-        "send_metrics_interval": 5
+    "zabbix_instances": {
+        "instance1" : {
+            "connection_errors_in_log": true,
+            "hostname": "SERVER-STREAMING",
+            "server_ip": "10.51.23.101",
+            "port": 10051,
+            "send_metrics_interval": 10
+        },
+        "instance2" : {
+            "connection_errors_in_log": true,
+            "hostname": "SERVER-STREAMING",
+            "server_ip": "10.51.23.103",
+            "port": 10051,
+            "send_metrics_interval": 10
+        }
     }
 }

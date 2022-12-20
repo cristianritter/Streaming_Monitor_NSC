@@ -31,37 +31,43 @@ config = FileOperations_.read_json_from_file('config.json')
 def realtime_monitor(metrica, nome):
     Analyzer_ = Analyzer()
     Gravacao_ = Gravacao()
-    MyZabbixSender(metric_interval=config['zabbix']['send_metrics_interval'],
-    hostname=config['zabbix']['hostname'],
-    server=config['zabbix']['server_ip'],
-    port=config['zabbix']['port'],
-    key=config['instancias'][nome]['zabbix_key'],
-    metrica=metrica
-    )
+    
+    for instance in config['zabbix_instances'].keys():
+        MyZabbixSender(metric_interval=config['zabbix_instances'][instance]['send_metrics_interval'],
+        hostname=config['zabbix_instances'][instance]['hostname'],
+        server=config['zabbix_instances'][instance]['server_ip'],
+        port=config['zabbix_instances'][instance]['port'],
+        key=config['instancias'][nome]['zabbix_key'],
+        metrica=metrica
+        )
+    
     while True:
-        filename = f'R:\\{nome}.wav'
-        record_result = Gravacao_.gravar_trecho_de_streaming(config['instancias'][nome]['link'], filename)
-        if (record_result != 0):
-            print(f"Erro na gravação de {nome}")
-            metrica[0] |= (1<<2)
-        else:
-            pass
-            metrica[0] &= ~(1<<2)
-        
-        if not FileOperations_.verificar_file_exists(filename):
-            continue
-        
-        audio_data = FileOperations_.read_wav_file(filename)
-        silence_ch_status = Analyzer_.verifica_silencio(audio_data, config['instancias'][nome]['silence_offset'])
-        
-        for idx, channel in enumerate(silence_ch_status):
-            if channel:
-                print(f'Silence in CH{idx}')
-                metrica[0] |= (1<<idx)
+        try:
+            filename = f'R:\\{nome}.wav'
+            record_result = Gravacao_.gravar_trecho_de_streaming(config['instancias'][nome]['link'], filename)
+            if (record_result != 0):
+                print(f"Erro na gravação de {nome}")
+                metrica[0] |= (1<<2)
             else:
-                metrica[0] &= ~(1<<idx)
+                pass
+                metrica[0] &= ~(1<<2)
+            
+            if not FileOperations_.verificar_file_exists(filename):
+                continue
+            
+            audio_data = FileOperations_.read_wav_file(filename)
+            silence_ch_status = Analyzer_.verifica_silencio(audio_data, config['instancias'][nome]['silence_offset'])
+            
+            for idx, channel in enumerate(silence_ch_status):
+                if channel:
+                    print(f'Silence in CH{idx}')
+                    metrica[0] |= (1<<idx)
+                else:
+                    metrica[0] &= ~(1<<idx)
 
-        sleep(10)
+            sleep(10)
+        except:
+            pass
 
 def Main():
     t = []

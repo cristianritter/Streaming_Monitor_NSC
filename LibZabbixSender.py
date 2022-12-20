@@ -33,7 +33,7 @@ class MyZabbixSender:
         '''
         try:
             while True:
-                print(self.metrica)
+                #print(self.metrica)
                 time.sleep(self.metric_interval)       
                 texto_metrica = ""
                 #print(type(self.metrica))

@@ -28,6 +28,7 @@ class Analyzer():
         audio_results = [False, False]
         for idx, value in enumerate(self.get_data_RMS(data)):
             if value <= silence_offset:
+                print(value)
                 audio_results[idx] = True
         return audio_results
 
